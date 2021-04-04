@@ -26,7 +26,7 @@ public class GridStructure {
         return new Vector3(x * _cellSize, 0, z * _cellSize);
     }
 
-    public Vector2Int CalculateGridIndex(Vector3 gridPosition) {
+    private Vector2Int CalculateGridIndex(Vector3 gridPosition) {
         return new Vector2Int((int)(gridPosition.x / this._cellSize), (int)(gridPosition.z / this._cellSize));
     }
 
