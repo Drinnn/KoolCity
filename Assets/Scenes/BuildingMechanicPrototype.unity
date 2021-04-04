@@ -718,6 +718,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 1655278097}
   placementManager: {fileID: 1136610794}
+  gridWidth: 100
+  gridLength: 100
 --- !u!4 &825030308
 Transform:
   m_ObjectHideFlags: 0

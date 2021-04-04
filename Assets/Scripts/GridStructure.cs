@@ -32,7 +32,7 @@ public class GridStructure {
 
     public bool IsCellTaken(Vector3 gridPosition) {
         var cellIndex = CalculateGridIndex(gridPosition);
-        if (cellIndex.x > 0 && cellIndex.x < _grid.GetLength(1) && cellIndex.y > 0 && cellIndex.y < _grid.GetLength(0))
+        if (cellIndex.x >= 0 && cellIndex.x < _grid.GetLength(1) && cellIndex.y >= 0 && cellIndex.y < _grid.GetLength(0))
             return _grid[cellIndex.y, cellIndex.x].IsTaken;
 
         throw new IndexOutOfRangeException("No index " + cellIndex + " in grid.");
@@ -40,7 +40,7 @@ public class GridStructure {
 
     public void PlaceStructureOnGrid(GameObject structure, Vector3 gridPosition) {
         var cellIndex = CalculateGridIndex(gridPosition);
-        if (cellIndex.x > 0 && cellIndex.x < _grid.GetLength(1) && cellIndex.y > 0 && cellIndex.y < _grid.GetLength(0))
+        if (cellIndex.x >= 0 && cellIndex.x < _grid.GetLength(1) && cellIndex.y >= 0 && cellIndex.y < _grid.GetLength(0))
             _grid[cellIndex.y, cellIndex.x].SetConstruction(structure);
     }
 
