@@ -9,7 +9,7 @@ public class GridStructureTest {
 
     [OneTimeSetUp]
     public void Init() {
-        _gridStructure = new GridStructure(3);
+        _gridStructure = new GridStructure(100, 100, 3);
     }
 
     [Test]
