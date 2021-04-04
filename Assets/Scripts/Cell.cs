@@ -7,8 +7,9 @@ public class Cell {
     public bool IsTaken { get => _isTaken; }
 
     public void SetConstruction(GameObject structureModel) {
-        this._structureModel = structureModel;
-        this._isTaken = true;
+        if (structureModel != null) {
+            this._structureModel = structureModel;
+            this._isTaken = true;
+        }
     }
-
 }
