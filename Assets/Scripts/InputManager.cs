@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour {
     [SerializeField] private LayerMask groundLayerMask;
 
-    // [SerializeField] private GameObject buildingPrefab;
+    private Action<Vector3> OnPointerDownHandler;
 
     private void Update() {
         GetInput();
@@ -16,11 +17,16 @@ public class InputManager : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, groundLayerMask)) {
                 Vector3 position = hit.point - transform.position;
+                OnPointerDownHandler?.Invoke(position);
             }
         }
     }
 
-    // private void CreateBuilding(Vector3 buildingPosition) {
-    //     Instantiate(buildingPrefab, buildingPosition, Quaternion.identity);
-    // }
+    public void AddListenerOnPointerDownEvent(Action<Vector3> listener) {
+        OnPointerDownHandler += listener;
+    }
+
+    public void RemoveListenerOnPointerDownEvent(Action<Vector3> listener) {
+        OnPointerDownHandler -= listener;
+    }
 }

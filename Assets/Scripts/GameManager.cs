@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         _grid = new GridStructure(_cellSize);
+        inputManager.AddListenerOnPointerDownEvent(HandleInput);
+    }
+
+    private void HandleInput(Vector3 position) {
+        placementManager.PlaceBuilding(_grid.CalculateGridPosition(position));
     }
 
 }
