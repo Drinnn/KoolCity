@@ -541,7 +541,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7092152104881539869, guid: 559c11d47e063bc4991c465e37cd193d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 340
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7092152104881539869, guid: 559c11d47e063bc4991c465e37cd193d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -565,7 +565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7092152104927166074, guid: 559c11d47e063bc4991c465e37cd193d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 340
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7092152104927166074, guid: 559c11d47e063bc4991c465e37cd193d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -853,8 +853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c58c1ed53a5f6469413ada94c0b902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputManager: {fileID: 1655278097}
   placementManager: {fileID: 1136610794}
+  uIController: {fileID: 1102770940}
   gridWidth: 100
   gridLength: 100
 --- !u!4 &825030308
