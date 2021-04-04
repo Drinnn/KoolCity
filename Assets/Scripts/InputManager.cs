@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InputManager : MonoBehaviour {
+public class InputManager : MonoBehaviour, IInputManager {
     [SerializeField] private LayerMask groundLayerMask;
 
     private Action<Vector3> OnPointerDownHandler;
