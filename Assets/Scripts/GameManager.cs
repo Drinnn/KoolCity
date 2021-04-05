@@ -12,11 +12,23 @@ public class GameManager : MonoBehaviour {
 
     private GridStructure _grid;
     private int _cellSize = 3;
-    private bool _isOnBuildingMode = false;
+
+    private PlayerState state;
+
+    public PlayerSelectionState selectionState;
+    public PlayerBuildingSingleStructureState buildingSingleStructureState;
+
+    private void Awake() {
+        _grid = new GridStructure(gridWidth, gridLength, _cellSize);
+
+        selectionState = new PlayerSelectionState(this, cameraMovement);
+        buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, placementManager, _grid);
+
+        state = selectionState;
+    }
 
     private void Start() {
         inputManager = FindObjectsOfType<MonoBehaviour>().OfType<IInputManager>().FirstOrDefault();
-        _grid = new GridStructure(gridWidth, gridLength, _cellSize);
         cameraMovement.SetCameraBounds(0, gridWidth, 0, gridLength);
 
         inputManager.AddListenerOnPointerDownEvent(HandleInput);
@@ -29,32 +41,32 @@ public class GameManager : MonoBehaviour {
     }
 
     private void HandleInput(Vector3 position) {
-        Vector3 gridPosition = _grid.CalculateGridPosition(position);
-        if (_isOnBuildingMode && !_grid.IsCellTaken(gridPosition)) {
-            placementManager.PlaceBuilding(gridPosition, _grid);
-        }
+        state.OnInputPointerDown(position);
     }
 
     private void HandleInputCameraPanStart(Vector3 position) {
-        if (!_isOnBuildingMode) {
-            cameraMovement.MoveCamera(position);
-        }
+        state.OnInputPanChange(position);
     }
 
     private void HandleInputCameraPanStop() {
-        cameraMovement.StopCameraMovement();
+        state.OnInputPanUp();
     }
 
     private void HandlePointerChange(Vector3 position) {
-        Debug.Log(position);
+        state.OnInputPointerChange(position);
     }
 
     private void StartPlacementMode() {
-        _isOnBuildingMode = true;
+        TransitionToState(buildingSingleStructureState);
     }
 
     private void CancelPlacementMode() {
-        _isOnBuildingMode = false;
+        state.OnCancel();
+    }
+
+    public void TransitionToState(PlayerState newState) {
+        this.state = newState;
+        this.state.EnterState();
     }
 
 }
