@@ -9,9 +9,9 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private int gridWidth;
     [SerializeField] private int gridLength;
 
-
-    private GridStructure _grid;
     private int _cellSize = 3;
+
+    private BuildingManager _buildingManager;
 
     private PlayerState state;
 
@@ -21,10 +21,9 @@ public class GameManager : MonoBehaviour {
     public PlayerState State { get => state; }
 
     private void Awake() {
-        _grid = new GridStructure(gridWidth, gridLength, _cellSize);
-
+        _buildingManager = new BuildingManager(placementManager, gridWidth, gridLength, _cellSize);
         selectionState = new PlayerSelectionState(this, cameraMovement);
-        buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, placementManager, _grid);
+        buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, _buildingManager);
 
         state = selectionState;
     }
