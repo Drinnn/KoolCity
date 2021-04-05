@@ -7,7 +7,6 @@ public class UIController : MonoBehaviour {
     private Action OnCancelHandler;
     private Action OnDemolishActionHandler;
 
-
     [SerializeField] public Button buildResidentialAreaBtn;
 
     [SerializeField] public GameObject cancelActionPanel;
@@ -17,22 +16,46 @@ public class UIController : MonoBehaviour {
     [SerializeField] public Button openBuildMenuBtn;
     [SerializeField] public Button demolishBtn;
 
+    [SerializeField] public GameObject zonesPanel;
+    [SerializeField] public GameObject facilitiesPanel;
+    [SerializeField] public GameObject roadsPanel;
+    [SerializeField] public Button closeBuildMenuBtn;
+
+    [SerializeField] public GameObject buildButtonPrefab;
+
     private void Start() {
         cancelActionPanel.SetActive(false);
         buildingMenuPanel.SetActive(false);
-        buildResidentialAreaBtn.onClick.AddListener(OnBuildAreaCallback);
+        // buildResidentialAreaBtn.onClick.AddListener(OnBuildAreaCallback);
         cancelActionBtn.onClick.AddListener(OnCancelCallback);
         openBuildMenuBtn.onClick.AddListener(OnOpenBuildMenu);
         demolishBtn.onClick.AddListener(OnDemolishHandler);
+        closeBuildMenuBtn.onClick.AddListener(OnCloseMenuHandler);
     }
 
     private void OnOpenBuildMenu() {
         buildingMenuPanel.SetActive(true);
+        PrepareBuildMenu();
+    }
+
+    private void PrepareBuildMenu() {
+        CreateButtonsInPanel(zonesPanel.transform);
+        CreateButtonsInPanel(facilitiesPanel.transform);
+        CreateButtonsInPanel(roadsPanel.transform);
+    }
+
+    private void CreateButtonsInPanel(Transform panelTransform) {
+        foreach (Transform child in panelTransform) {
+            Button button = child.GetComponent<Button>();
+            if (button != null) {
+                button.onClick.AddListener(OnBuildAreaCallback);
+            }
+        }
     }
 
     private void OnBuildAreaCallback() {
         cancelActionPanel.SetActive(true);
-        buildingMenuPanel.SetActive(false);
+        OnCloseMenuHandler();
         OnBuildAreaHandler?.Invoke();
     }
 
@@ -44,6 +67,10 @@ public class UIController : MonoBehaviour {
     private void OnDemolishHandler() {
         OnDemolishActionHandler?.Invoke();
         cancelActionPanel.SetActive(true);
+        OnCloseMenuHandler();
+    }
+
+    private void OnCloseMenuHandler() {
         buildingMenuPanel.SetActive(false);
     }
 
