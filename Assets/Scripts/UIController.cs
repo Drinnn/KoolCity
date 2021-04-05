@@ -6,9 +6,9 @@ public class UIController : MonoBehaviour {
     private Action OnBuildAreaHandler;
     private Action OnCancelHandler;
 
-    [SerializeField] private Button buildResidentialAreaBtn;
-    [SerializeField] private Button cancelActionBtn;
-    [SerializeField] private GameObject cancelActionPanel;
+    [SerializeField] public Button buildResidentialAreaBtn;
+    [SerializeField] public Button cancelActionBtn;
+    [SerializeField] public GameObject cancelActionPanel;
 
     private void Start() {
         cancelActionPanel.SetActive(false);

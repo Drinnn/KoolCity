@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour {
     public PlayerSelectionState selectionState;
     public PlayerBuildingSingleStructureState buildingSingleStructureState;
 
+    public PlayerState State { get => state; }
+
     private void Awake() {
         _grid = new GridStructure(gridWidth, gridLength, _cellSize);
 
