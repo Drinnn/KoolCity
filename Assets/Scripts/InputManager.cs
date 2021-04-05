@@ -9,7 +9,9 @@ public class InputManager : MonoBehaviour, IInputManager {
     private Action<Vector3> OnPointerChangeHandler;
     private Action OnPointerSecondUpHandler;
 
-    [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private LayerMask mouseInputMask;
+
+    public LayerMask MouseInputMask { get => mouseInputMask; set => mouseInputMask = value; }
 
     private void Update() {
         GetPointerPosition();
@@ -40,7 +42,7 @@ public class InputManager : MonoBehaviour, IInputManager {
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         Vector3? position = null;
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, groundLayerMask)) {
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, mouseInputMask)) {
             position = hit.point - transform.position;
         }
 

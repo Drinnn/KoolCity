@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] public CameraMovement cameraMovement;
     [SerializeField] private int gridWidth;
     [SerializeField] private int gridLength;
+    [SerializeField] private LayerMask inputMask;
 
     private int _cellSize = 3;
 
@@ -28,17 +29,31 @@ public class GameManager : MonoBehaviour {
         removeBuildingState = new PlayerRemoveBuildingState(this, _buildingManager);
 
         state = selectionState;
+
+#if (UNITY_EDITOR && TEST) || !(UNITY_IOS || UNITY_ANDROID)
+        inputManager = gameObject.AddComponent<InputManager>();
+#endif
     }
 
     private void Start() {
-        inputManager = FindObjectsOfType<MonoBehaviour>().OfType<IInputManager>().FirstOrDefault();
-        cameraMovement.SetCameraBounds(0, gridWidth, 0, gridLength);
+        PrepareGameComponents();
+        AssignInputListeners();
+        AssignUIControllerListeners();
+    }
 
+    private void PrepareGameComponents() {
+        inputManager.MouseInputMask = inputMask;
+        cameraMovement.SetCameraBounds(0, gridWidth, 0, gridLength);
+    }
+
+    private void AssignInputListeners() {
         inputManager.AddListenerOnPointerDownEvent(HandleInput);
         inputManager.AddListenerOnPointerSecondChangeEvent(HandleInputCameraPanStart);
         inputManager.AddListenerOnPointerSecondUpEvent(HandleInputCameraPanStop);
         inputManager.AddListenerOnPointerChangeEvent(HandlePointerChange);
+    }
 
+    private void AssignUIControllerListeners() {
         uIController.AddListenerOnBuildAreaEvent(StartPlacementMode);
         uIController.AddListenerOnCancelEvent(CancelPlacementMode);
         uIController.AddListenerOnDemolishActionEvent(StartDemolishMode);
