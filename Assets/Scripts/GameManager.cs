@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
 
     public PlayerSelectionState selectionState;
     public PlayerBuildingSingleStructureState buildingSingleStructureState;
+    public PlayerRemoveBuildingState removeBuildingState;
 
     public PlayerState State { get => state; }
 
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour {
         _buildingManager = new BuildingManager(placementManager, gridWidth, gridLength, _cellSize);
         selectionState = new PlayerSelectionState(this, cameraMovement);
         buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, _buildingManager);
+        removeBuildingState = new PlayerRemoveBuildingState(this, _buildingManager);
 
         state = selectionState;
     }
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour {
 
         uIController.AddListenerOnBuildAreaEvent(StartPlacementMode);
         uIController.AddListenerOnCancelEvent(CancelPlacementMode);
+        uIController.AddListenerOnDemolishActionEvent(StartDemolishMode);
     }
 
     private void HandleInput(Vector3 position) {
@@ -63,6 +66,10 @@ public class GameManager : MonoBehaviour {
 
     private void CancelPlacementMode() {
         state.OnCancel();
+    }
+
+    private void StartDemolishMode() {
+        TransitionToState(removeBuildingState);
     }
 
     public void TransitionToState(PlayerState newState) {

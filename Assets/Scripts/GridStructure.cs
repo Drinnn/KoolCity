@@ -44,6 +44,16 @@ public class GridStructure {
             _grid[cellIndex.y, cellIndex.x].SetConstruction(structure);
     }
 
+    public GameObject GetStructureFromGrid(Vector3 gridPosition) {
+        Vector2Int cellIndex = CalculateGridIndex(gridPosition);
+        return _grid[cellIndex.y, cellIndex.x].GetStructure();
+    }
+
+    public void RemoveStructureFromGrid(Vector3 gridPosition) {
+        Vector2Int cellIndex = CalculateGridIndex(gridPosition);
+        _grid[cellIndex.y, cellIndex.x].RemoveStructure();
+    }
+
     private bool CheckIndexValidity(Vector2Int cellIndex) {
         return cellIndex.x >= 0 && cellIndex.x < _grid.GetLength(1) && cellIndex.y >= 0 && cellIndex.y < _grid.GetLength(0);
     }

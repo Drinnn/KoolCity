@@ -17,4 +17,12 @@ public class BuildingManager {
             _placementManager.PlaceBuilding(gridPosition, _grid);
         }
     }
+
+    public void RemoveBuildingAt(Vector3 inputPosition) {
+        Vector3 gridPosition = this._grid.CalculateGridPosition(inputPosition);
+
+        if (_grid.IsCellTaken(gridPosition)) {
+            _placementManager.RemoveBuilding(gridPosition, _grid);
+        }
+    }
 }

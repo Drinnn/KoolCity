@@ -12,4 +12,13 @@ public class Cell {
             this._isTaken = true;
         }
     }
+
+    public GameObject GetStructure() {
+        return this._structureModel;
+    }
+
+    public void RemoveStructure() {
+        this._structureModel = null;
+        this._isTaken = false;
+    }
 }
