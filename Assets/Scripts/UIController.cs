@@ -1,11 +1,15 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIController : MonoBehaviour {
     private Action OnBuildAreaHandler;
     private Action OnCancelHandler;
     private Action OnDemolishActionHandler;
+
+    [SerializeField] public StructureRepository structureRepository;
 
     [SerializeField] public Button buildResidentialAreaBtn;
 
@@ -39,15 +43,23 @@ public class UIController : MonoBehaviour {
     }
 
     private void PrepareBuildMenu() {
-        CreateButtonsInPanel(zonesPanel.transform);
-        CreateButtonsInPanel(facilitiesPanel.transform);
-        CreateButtonsInPanel(roadsPanel.transform);
+        CreateButtonsInPanel(zonesPanel.transform, structureRepository.GetZoneNames());
+        CreateButtonsInPanel(facilitiesPanel.transform, structureRepository.GetSingleStructureNames());
+        CreateButtonsInPanel(roadsPanel.transform, new List<string>() { structureRepository.GetRoadStructureName() });
     }
 
-    private void CreateButtonsInPanel(Transform panelTransform) {
-        foreach (Transform child in panelTransform) {
-            Button button = child.GetComponent<Button>();
+    private void CreateButtonsInPanel(Transform panelTransform, List<string> dataToShow) {
+        if (dataToShow.Count > panelTransform.childCount) {
+            int quantityDiff = dataToShow.Count - panelTransform.childCount;
+            for (int i = 0; i < quantityDiff; i++) {
+                Instantiate(buildButtonPrefab, panelTransform);
+            }
+        }
+
+        for (int i = 0; i < panelTransform.childCount; i++) {
+            Button button = panelTransform.GetChild(i).GetComponent<Button>();
             if (button != null) {
+                button.GetComponentInChildren<TextMeshProUGUI>().text = dataToShow[i];
                 button.onClick.AddListener(OnBuildAreaCallback);
             }
         }
