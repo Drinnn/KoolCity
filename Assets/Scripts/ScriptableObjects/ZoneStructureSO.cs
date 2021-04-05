@@ -19,5 +19,5 @@ public struct UpgradeType {
 public enum ZoneType {
     Residential,
     Agricultural,
-    Comercial
+    Commercial
 }
