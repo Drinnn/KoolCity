@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +13,7 @@ public class PlayerStatusTest {
     public void Init() {
         GameObject gameManagerObject = new GameObject();
         CameraMovement cameraMovementComponent = gameManagerObject.AddComponent<CameraMovement>();
-        gameManagerObject.AddComponent<InputManager>();
+
         _uiController = gameManagerObject.AddComponent<UIController>();
         GameObject buildBtnObject = new GameObject();
         GameObject cancelBtnObject = new GameObject();
@@ -23,6 +22,11 @@ public class PlayerStatusTest {
         var buildComponentBtn = buildBtnObject.AddComponent<Button>();
         _uiController.buildResidentialAreaBtn = buildComponentBtn;
         _uiController.cancelActionPanel = cancelPanel;
+
+        _uiController.buildingMenuPanel = cancelPanel;
+        _uiController.openBuildMenuBtn = _uiController.cancelActionBtn;
+        _uiController.demolishBtn = _uiController.cancelActionBtn;
+
         _gameManagerComponent = gameManagerObject.AddComponent<GameManager>();
         _gameManagerComponent.cameraMovement = cameraMovementComponent;
         _gameManagerComponent.uIController = _uiController;
