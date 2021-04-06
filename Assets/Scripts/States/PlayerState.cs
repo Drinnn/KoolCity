@@ -14,7 +14,7 @@ public abstract class PlayerState {
     public abstract void OnInputPanUp();
     public abstract void OnCancel();
 
-    public virtual void EnterState() {
+    public virtual void EnterState(string structureName) {
 
     }
 }

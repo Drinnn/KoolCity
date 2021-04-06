@@ -27,6 +27,10 @@ public class PlayerBuildingSingleStructureState : PlayerState {
     }
 
     public override void OnCancel() {
-        this._gameManager.TransitionToState(this._gameManager.selectionState);
+        this._gameManager.TransitionToState(this._gameManager.selectionState, null);
+    }
+
+    public override void EnterState(string structureName) {
+        base.EnterState(structureName);
     }
 }

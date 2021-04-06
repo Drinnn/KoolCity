@@ -75,8 +75,8 @@ public class GameManager : MonoBehaviour {
         state.OnInputPointerChange(position);
     }
 
-    private void StartPlacementMode() {
-        TransitionToState(buildingSingleStructureState);
+    private void StartPlacementMode(string structureName) {
+        TransitionToState(buildingSingleStructureState, structureName);
     }
 
     private void CancelPlacementMode() {
@@ -84,12 +84,12 @@ public class GameManager : MonoBehaviour {
     }
 
     private void StartDemolishMode() {
-        TransitionToState(removeBuildingState);
+        TransitionToState(removeBuildingState, null);
     }
 
-    public void TransitionToState(PlayerState newState) {
+    public void TransitionToState(PlayerState newState, string structureName) {
         this.state = newState;
-        this.state.EnterState();
+        this.state.EnterState(structureName);
     }
 
 }

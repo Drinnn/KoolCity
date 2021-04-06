@@ -28,6 +28,6 @@ public class PlayerRemoveBuildingState : PlayerState {
     }
 
     public override void OnCancel() {
-        this._gameManager.TransitionToState(this._gameManager.selectionState);
+        this._gameManager.TransitionToState(this._gameManager.selectionState, null);
     }
 }

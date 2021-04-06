@@ -5,7 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 
 public class UIController : MonoBehaviour {
-    private Action OnBuildAreaHandler;
+    private Action<string> OnBuildAreaHandler;
+    private Action<string> OnBuildSingleStructureHandler;
+    private Action<string> OnBuildRoadHandler;
     private Action OnCancelHandler;
     private Action OnDemolishActionHandler;
 
@@ -43,12 +45,12 @@ public class UIController : MonoBehaviour {
     }
 
     private void PrepareBuildMenu() {
-        CreateButtonsInPanel(zonesPanel.transform, structureRepository.GetZoneNames());
-        CreateButtonsInPanel(facilitiesPanel.transform, structureRepository.GetSingleStructureNames());
-        CreateButtonsInPanel(roadsPanel.transform, new List<string>() { structureRepository.GetRoadStructureName() });
+        CreateButtonsInPanel(zonesPanel.transform, structureRepository.GetZoneNames(), OnBuildAreaCallback);
+        CreateButtonsInPanel(facilitiesPanel.transform, structureRepository.GetSingleStructureNames(), OnBuildSingleStructureCallback);
+        CreateButtonsInPanel(roadsPanel.transform, new List<string>() { structureRepository.GetRoadStructureName() }, OnBuildRoadCallback);
     }
 
-    private void CreateButtonsInPanel(Transform panelTransform, List<string> dataToShow) {
+    private void CreateButtonsInPanel(Transform panelTransform, List<string> dataToShow, Action<string> callback) {
         if (dataToShow.Count > panelTransform.childCount) {
             int quantityDiff = dataToShow.Count - panelTransform.childCount;
             for (int i = 0; i < quantityDiff; i++) {
@@ -60,15 +62,29 @@ public class UIController : MonoBehaviour {
             Button button = panelTransform.GetChild(i).GetComponent<Button>();
             if (button != null) {
                 button.GetComponentInChildren<TextMeshProUGUI>().text = dataToShow[i];
-                button.onClick.AddListener(OnBuildAreaCallback);
+                button.onClick.AddListener(() => callback(button.GetComponent<TextMeshProUGUI>().text));
             }
         }
     }
 
-    private void OnBuildAreaCallback() {
+    private void OnBuildAreaCallback(string structureName) {
+        PrepareUIForBuilding();
+        OnBuildAreaHandler?.Invoke(structureName);
+    }
+
+    private void OnBuildSingleStructureCallback(string structureName) {
+        PrepareUIForBuilding();
+        OnBuildSingleStructureHandler?.Invoke(structureName);
+    }
+
+    private void OnBuildRoadCallback(string structureName) {
+        PrepareUIForBuilding();
+        OnBuildRoadHandler?.Invoke(structureName);
+    }
+
+    private void PrepareUIForBuilding() {
         cancelActionPanel.SetActive(true);
         OnCloseMenuHandler();
-        OnBuildAreaHandler?.Invoke();
     }
 
     private void OnCancelCallback() {
@@ -86,12 +102,28 @@ public class UIController : MonoBehaviour {
         buildingMenuPanel.SetActive(false);
     }
 
-    public void AddListenerOnBuildAreaEvent(Action listener) {
+    public void AddListenerOnBuildAreaEvent(Action<string> listener) {
         OnBuildAreaHandler += listener;
     }
 
-    public void RemoveListenerOnBuildAreaEvent(Action listener) {
+    public void RemoveListenerOnBuildAreaEvent(Action<string> listener) {
         OnBuildAreaHandler -= listener;
+    }
+
+    public void AddListenerOnBuildSingleStructureEvent(Action<string> listener) {
+        OnBuildSingleStructureHandler += listener;
+    }
+
+    public void RemoveListenerOnBuildSingleStructureEvent(Action<string> listener) {
+        OnBuildSingleStructureHandler -= listener;
+    }
+
+    public void AddListenerOnBuildRoadEvent(Action<string> listener) {
+        OnBuildRoadHandler += listener;
+    }
+
+    public void RemoveListenerOnBuildRoadEvent(Action<string> listener) {
+        OnBuildRoadHandler -= listener;
     }
 
     public void AddListenerOnCancelEvent(Action listener) {
