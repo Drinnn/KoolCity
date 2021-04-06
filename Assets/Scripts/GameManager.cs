@@ -18,17 +18,14 @@ public class GameManager : MonoBehaviour {
 
     public PlayerSelectionState selectionState;
     public PlayerBuildingSingleStructureState buildingSingleStructureState;
+    public PlayerBuildingAreaState buildingAreaState;
+    public PlayerBuildingRoadState buildingRoadState;
     public PlayerRemoveBuildingState removeBuildingState;
 
     public PlayerState State { get => state; }
 
     private void Awake() {
-        _buildingManager = new BuildingManager(placementManager, gridWidth, gridLength, _cellSize);
-        selectionState = new PlayerSelectionState(this, cameraMovement);
-        buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, _buildingManager);
-        removeBuildingState = new PlayerRemoveBuildingState(this, _buildingManager);
-
-        state = selectionState;
+        PrepareStates();
 
 #if (UNITY_EDITOR && TEST) || !(UNITY_IOS || UNITY_ANDROID)
         inputManager = gameObject.AddComponent<InputManager>();
@@ -41,50 +38,35 @@ public class GameManager : MonoBehaviour {
         AssignUIControllerListeners();
     }
 
+    private void PrepareStates() {
+        _buildingManager = new BuildingManager(placementManager, gridWidth, gridLength, _cellSize);
+        selectionState = new PlayerSelectionState(this, cameraMovement);
+        buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, _buildingManager);
+        buildingAreaState = new PlayerBuildingAreaState(this, _buildingManager);
+        buildingRoadState = new PlayerBuildingRoadState(this, _buildingManager);
+        removeBuildingState = new PlayerRemoveBuildingState(this, _buildingManager);
+
+        state = selectionState;
+    }
+
     private void PrepareGameComponents() {
         inputManager.MouseInputMask = inputMask;
         cameraMovement.SetCameraBounds(0, gridWidth, 0, gridLength);
     }
 
     private void AssignInputListeners() {
-        inputManager.AddListenerOnPointerDownEvent(HandleInput);
-        inputManager.AddListenerOnPointerSecondChangeEvent(HandleInputCameraPanStart);
-        inputManager.AddListenerOnPointerSecondUpEvent(HandleInputCameraPanStop);
-        inputManager.AddListenerOnPointerChangeEvent(HandlePointerChange);
+        inputManager.AddListenerOnPointerDownEvent((position) => state.OnInputPointerDown(position));
+        inputManager.AddListenerOnPointerSecondChangeEvent((position) => state.OnInputPanChange(position));
+        inputManager.AddListenerOnPointerSecondUpEvent(() => state.OnInputPanUp());
+        inputManager.AddListenerOnPointerChangeEvent((position) => state.OnInputPointerChange(position));
     }
 
     private void AssignUIControllerListeners() {
-        uIController.AddListenerOnBuildAreaEvent(StartPlacementMode);
-        uIController.AddListenerOnCancelEvent(CancelPlacementMode);
-        uIController.AddListenerOnDemolishActionEvent(StartDemolishMode);
-    }
-
-    private void HandleInput(Vector3 position) {
-        state.OnInputPointerDown(position);
-    }
-
-    private void HandleInputCameraPanStart(Vector3 position) {
-        state.OnInputPanChange(position);
-    }
-
-    private void HandleInputCameraPanStop() {
-        state.OnInputPanUp();
-    }
-
-    private void HandlePointerChange(Vector3 position) {
-        state.OnInputPointerChange(position);
-    }
-
-    private void StartPlacementMode(string structureName) {
-        TransitionToState(buildingSingleStructureState, structureName);
-    }
-
-    private void CancelPlacementMode() {
-        state.OnCancel();
-    }
-
-    private void StartDemolishMode() {
-        TransitionToState(removeBuildingState, null);
+        uIController.AddListenerOnBuildAreaEvent((structureName) => state.OnBuildArea(structureName));
+        uIController.AddListenerOnBuildSingleStructureEvent((structureName) => state.OnBuildSingleStructure(structureName));
+        uIController.AddListenerOnBuildRoadEvent((structureName) => state.OnBuildRoad(structureName));
+        uIController.AddListenerOnCancelEvent(() => state.OnCancel());
+        uIController.AddListenerOnDemolishActionEvent(() => state.OnDemolishAction());
     }
 
     public void TransitionToState(PlayerState newState, string structureName) {
