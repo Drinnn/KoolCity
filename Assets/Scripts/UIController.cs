@@ -62,7 +62,7 @@ public class UIController : MonoBehaviour {
             Button button = panelTransform.GetChild(i).GetComponent<Button>();
             if (button != null) {
                 button.GetComponentInChildren<TextMeshProUGUI>().text = dataToShow[i];
-                button.onClick.AddListener(() => callback(button.GetComponent<TextMeshProUGUI>().text));
+                button.onClick.AddListener(() => callback(button.GetComponentInChildren<TextMeshProUGUI>().text));
             }
         }
     }

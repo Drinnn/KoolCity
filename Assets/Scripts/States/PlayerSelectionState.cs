@@ -30,21 +30,4 @@ public class PlayerSelectionState : PlayerState {
     public override void OnCancel() {
         return;
     }
-
-    public override void OnBuildArea(string structureName) {
-        this._gameManager.TransitionToState(this._gameManager.buildingAreaState, structureName);
-    }
-
-    public override void OnBuildSingleStructure(string structureName) {
-        this._gameManager.TransitionToState(this._gameManager.buildingSingleStructureState, structureName);
-    }
-
-    public override void OnBuildRoad(string structureName) {
-        this._gameManager.TransitionToState(this._gameManager.buildingRoadState, structureName);
-    }
-
-    public override void OnDemolishAction() {
-        this._gameManager.TransitionToState(this._gameManager.removeBuildingState, null);
-    }
-
 }
