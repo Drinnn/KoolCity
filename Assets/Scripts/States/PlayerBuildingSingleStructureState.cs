@@ -8,7 +8,7 @@ public class PlayerBuildingSingleStructureState : PlayerState {
         this._buildingManager = buildingManager;
     }
     public override void OnInputPointerDown(Vector3 inputPosition) {
-        this._buildingManager.PlaceStructureAt(inputPosition);
+        this._buildingManager.PlaceStructureAt(inputPosition, this._structureName, StructureType.SingleStructure);
     }
 
     public override void OnInputPointerChange(Vector3 position) {

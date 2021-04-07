@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class PlayerBuildingAreaState : PlayerState {
+public class PlayerBuildZoneState : PlayerState {
     private BuildingManager _buildingManager;
     private string _structureName;
 
-    public PlayerBuildingAreaState(GameManager gameManager, BuildingManager buildingManager) : base(gameManager) {
+    public PlayerBuildZoneState(GameManager gameManager, BuildingManager buildingManager) : base(gameManager) {
         this._buildingManager = buildingManager;
     }
 
     public override void OnInputPointerDown(Vector3 inputPosition) {
-        this._buildingManager.PlaceStructureAt(inputPosition);
+        this._buildingManager.PlaceStructureAt(inputPosition, this._structureName, StructureType.Zone);
     }
 
     public override void OnCancel() {

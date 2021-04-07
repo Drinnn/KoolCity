@@ -10,7 +10,7 @@ public class PlayerBuildingRoadState : PlayerState {
     }
 
     public override void OnInputPointerDown(Vector3 inputPosition) {
-        this._buildingManager.PlaceStructureAt(inputPosition);
+        this._buildingManager.PlaceStructureAt(inputPosition, this._structureName, StructureType.Road);
     }
 
     public override void OnCancel() {

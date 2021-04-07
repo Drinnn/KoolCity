@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     [SerializeField] public IInputManager inputManager;
     [SerializeField] public PlacementManager placementManager;
+    [SerializeField] public StructureRepository structureRepository;
     [SerializeField] public UIController uIController;
     [SerializeField] public CameraMovement cameraMovement;
     [SerializeField] private int gridWidth;
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour {
 
     public PlayerSelectionState selectionState;
     public PlayerBuildingSingleStructureState buildingSingleStructureState;
-    public PlayerBuildingAreaState buildingAreaState;
+    public PlayerBuildZoneState buildingAreaState;
     public PlayerBuildingRoadState buildingRoadState;
     public PlayerRemoveBuildingState removeBuildingState;
 
@@ -39,10 +40,10 @@ public class GameManager : MonoBehaviour {
     }
 
     private void PrepareStates() {
-        _buildingManager = new BuildingManager(placementManager, gridWidth, gridLength, _cellSize);
+        _buildingManager = new BuildingManager(placementManager, structureRepository, gridWidth, gridLength, _cellSize);
         selectionState = new PlayerSelectionState(this, cameraMovement);
         buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, _buildingManager);
-        buildingAreaState = new PlayerBuildingAreaState(this, _buildingManager);
+        buildingAreaState = new PlayerBuildZoneState(this, _buildingManager);
         buildingRoadState = new PlayerBuildingRoadState(this, _buildingManager);
         removeBuildingState = new PlayerRemoveBuildingState(this, _buildingManager);
 
