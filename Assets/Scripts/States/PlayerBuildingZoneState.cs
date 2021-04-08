@@ -9,7 +9,7 @@ public class PlayerBuildingZoneState : PlayerState {
     }
 
     public override void OnInputPointerDown(Vector3 inputPosition) {
-        this._buildingManager.PlaceStructureAt(inputPosition, this._structureName, StructureType.Zone);
+        this._buildingManager.PrepareStructureForPlacement(inputPosition, this._structureName, StructureType.Zone);
     }
 
     public override void OnBuildSingleStructure(string structureName) {

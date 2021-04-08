@@ -8,7 +8,7 @@ public class PlayerRemoveBuildingState : PlayerState {
     }
 
     public override void OnInputPointerDown(Vector3 inputPosition) {
-        this._buildingManager.RemoveBuildingAt(inputPosition);
+        this._buildingManager.PrepareStructureForRemovalAt(inputPosition);
     }
 
     public override void OnBuildSingleStructure(string structureName) {

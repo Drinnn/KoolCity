@@ -14,13 +14,27 @@ public class BuildingManager {
         this._grid = new GridStructure(gridWidth, gridLength, cellSize);
     }
 
-    public void PlaceStructureAt(Vector3 inputPosition, string structureName, StructureType structureType) {
+    public void PrepareStructureForPlacement(Vector3 inputPosition, string structureName, StructureType structureType) {
         GameObject buildingPrefab = this._structureRepository.GetBuildingPrefabByName(structureName, structureType);
         Vector3 gridPosition = this._grid.CalculateGridPosition(inputPosition);
         Vector3Int gridPositionInt = Vector3Int.FloorToInt(gridPosition);
-        if (!_grid.IsCellTaken(gridPosition) && (!_structuresToBeModified.ContainsKey(gridPositionInt))) {
-            _structuresToBeModified.Add(gridPositionInt, _placementManager.CreateGhostStructure(gridPosition, buildingPrefab));
+        if (!_grid.IsCellTaken(gridPosition)) {
+            if (_structuresToBeModified.ContainsKey(gridPositionInt)) {
+                RevokeStructureFromPlacementAt(gridPositionInt);
+            } else {
+                PlaceNewStructureAt(gridPosition, gridPositionInt, buildingPrefab);
+            }
         }
+    }
+
+    private void RevokeStructureFromPlacementAt(Vector3Int gridPositionInt) {
+        GameObject structure = _structuresToBeModified[gridPositionInt];
+        _placementManager.DestroySingleStructure(structure);
+        _structuresToBeModified.Remove(gridPositionInt);
+    }
+
+    private void PlaceNewStructureAt(Vector3 gridPosition, Vector3Int gridPositionInt, GameObject buildingPrefab) {
+        _structuresToBeModified.Add(gridPositionInt, _placementManager.CreateGhostStructure(gridPosition, buildingPrefab));
     }
 
     public void ConfirmPlacement() {
@@ -36,14 +50,28 @@ public class BuildingManager {
         _structuresToBeModified.Clear();
     }
 
-    public void RemoveBuildingAt(Vector3 inputPosition) {
+    public void PrepareStructureForRemovalAt(Vector3 inputPosition) {
         Vector3 gridPosition = this._grid.CalculateGridPosition(inputPosition);
 
         if (_grid.IsCellTaken(gridPosition)) {
+            Vector3Int gridPositionInt = Vector3Int.FloorToInt(gridPosition);
             GameObject structure = _grid.GetStructureFromGrid(gridPosition);
-            _structuresToBeModified.Add(Vector3Int.FloorToInt(gridPosition), structure);
-            _placementManager.SetBuildingForRemoval(structure);
+            if (_structuresToBeModified.ContainsKey(gridPositionInt)) {
+                RemoveStructureForDemolishionAt(gridPositionInt, structure);
+            } else {
+                AddStructureForDemolishion(gridPositionInt, structure);
+            }
         }
+    }
+
+    private void RemoveStructureForDemolishionAt(Vector3Int gridPositionInt, GameObject structure) {
+        _placementManager.ResetBuildingMaterial(structure);
+        _structuresToBeModified.Remove(gridPositionInt);
+    }
+
+    private void AddStructureForDemolishion(Vector3Int gridPositionInt, GameObject structure) {
+        _structuresToBeModified.Add(gridPositionInt, structure);
+        _placementManager.SetBuildingForRemoval(structure);
     }
 
     public void ConfirmRemoval() {

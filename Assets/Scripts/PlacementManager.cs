@@ -33,21 +33,29 @@ public class PlacementManager : MonoBehaviour {
 
     public void PlaceStructuresOnMap(IEnumerable<GameObject> structureCollection) {
         foreach (GameObject structure in structureCollection) {
-            foreach (Transform child in structure.transform) {
-                MeshRenderer renderer = child.GetComponent<MeshRenderer>();
-                if (originalMaterials.ContainsKey(child.gameObject)) {
-                    renderer.materials = originalMaterials[child.gameObject];
-                }
-            }
+            ResetBuildingMaterial(structure);
         }
         originalMaterials.Clear();
     }
 
+    public void ResetBuildingMaterial(GameObject structure) {
+        foreach (Transform child in structure.transform) {
+            MeshRenderer renderer = child.GetComponent<MeshRenderer>();
+            if (originalMaterials.ContainsKey(child.gameObject)) {
+                renderer.materials = originalMaterials[child.gameObject];
+            }
+        }
+    }
+
     public void DestroyStructures(IEnumerable<GameObject> structureCollection) {
         foreach (GameObject structure in structureCollection) {
-            Destroy(structure);
+            DestroySingleStructure(structure);
         }
         originalMaterials.Clear();
+    }
+
+    public void DestroySingleStructure(GameObject structure) {
+        Destroy(structure);
     }
 
     public void SetBuildingForRemoval(GameObject buildingToRemove) {
