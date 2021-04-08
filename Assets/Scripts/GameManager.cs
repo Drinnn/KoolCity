@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour {
         uIController.AddListenerOnBuildAreaEvent((structureName) => state.OnBuildArea(structureName));
         uIController.AddListenerOnBuildSingleStructureEvent((structureName) => state.OnBuildSingleStructure(structureName));
         uIController.AddListenerOnBuildRoadEvent((structureName) => state.OnBuildRoad(structureName));
+        uIController.AddListenerOnConfirmEvent(() => state.OnConfirm());
         uIController.AddListenerOnCancelEvent(() => state.OnCancel());
         uIController.AddListenerOnDemolishActionEvent(() => state.OnDemolishAction());
     }

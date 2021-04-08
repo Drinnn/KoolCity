@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingManager {
     private PlacementManager _placementManager;
     private StructureRepository _structureRepository;
+    private Dictionary<Vector3Int, GameObject> _structuresToBeModified = new Dictionary<Vector3Int, GameObject>();
 
     private GridStructure _grid;
 
@@ -15,10 +17,23 @@ public class BuildingManager {
     public void PlaceStructureAt(Vector3 inputPosition, string structureName, StructureType structureType) {
         GameObject buildingPrefab = this._structureRepository.GetBuildingPrefabByName(structureName, structureType);
         Vector3 gridPosition = this._grid.CalculateGridPosition(inputPosition);
-
-        if (!_grid.IsCellTaken(gridPosition)) {
-            _placementManager.PlaceBuilding(gridPosition, _grid, buildingPrefab);
+        Vector3Int gridPositionInt = Vector3Int.FloorToInt(gridPosition);
+        if (!_grid.IsCellTaken(gridPosition) && (!_structuresToBeModified.ContainsKey(gridPositionInt))) {
+            _structuresToBeModified.Add(gridPositionInt, _placementManager.CreateGhostStructure(gridPosition, buildingPrefab));
         }
+    }
+
+    public void ConfirmPlacement() {
+        _placementManager.ConfirmPlacement(_structuresToBeModified.Values);
+        foreach (var keyValuePair in _structuresToBeModified) {
+            _grid.PlaceStructureOnGrid(keyValuePair.Value, keyValuePair.Key);
+        }
+        _structuresToBeModified.Clear();
+    }
+
+    public void CancelPlacement() {
+        _placementManager.CancelPlacement(_structuresToBeModified.Values);
+        _structuresToBeModified.Clear();
     }
 
     public void RemoveBuildingAt(Vector3 inputPosition) {

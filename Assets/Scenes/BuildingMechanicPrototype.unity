@@ -1764,6 +1764,7 @@ MonoBehaviour:
   structureRepository: {fileID: 173191237}
   buildResidentialAreaBtn: {fileID: 0}
   cancelActionPanel: {fileID: 1289046395}
+  confirmActionBtn: {fileID: 1360723243}
   cancelActionBtn: {fileID: 342674360}
   buildingMenuPanel: {fileID: 2059848150}
   openBuildMenuBtn: {fileID: 287552976}
@@ -1906,6 +1907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ground: {fileID: 6633803}
+  transparentMaterial: {fileID: 2100000, guid: 19aeccfa875758143b1b8fc7176e8f84, type: 2}
 --- !u!4 &1136610795
 Transform:
   m_ObjectHideFlags: 0
