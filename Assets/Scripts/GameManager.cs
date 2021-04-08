@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
 
     public PlayerSelectionState selectionState;
     public PlayerBuildingSingleStructureState buildingSingleStructureState;
-    public PlayerBuildZoneState buildingAreaState;
+    public PlayerBuildingZoneState buildingAreaState;
     public PlayerBuildingRoadState buildingRoadState;
     public PlayerRemoveBuildingState removeBuildingState;
 
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
         _buildingManager = new BuildingManager(placementManager, structureRepository, gridWidth, gridLength, _cellSize);
         selectionState = new PlayerSelectionState(this);
         buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, _buildingManager);
-        buildingAreaState = new PlayerBuildZoneState(this, _buildingManager);
+        buildingAreaState = new PlayerBuildingZoneState(this, _buildingManager);
         buildingRoadState = new PlayerBuildingRoadState(this, _buildingManager);
         removeBuildingState = new PlayerRemoveBuildingState(this, _buildingManager);
 

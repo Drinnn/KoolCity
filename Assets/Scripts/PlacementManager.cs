@@ -8,6 +8,13 @@ public class PlacementManager : MonoBehaviour {
 
     public GameObject CreateGhostStructure(Vector3 gridPosition, GameObject buildingPrefab) {
         GameObject newStructure = Instantiate(buildingPrefab, ground.position + gridPosition, Quaternion.identity);
+        Color colorToSet = Color.green;
+        ModifyStructurePrefabLook(newStructure, colorToSet);
+
+        return newStructure;
+    }
+
+    private void ModifyStructurePrefabLook(GameObject newStructure, Color colorToSet) {
         foreach (Transform child in newStructure.transform) {
             MeshRenderer renderer = child.GetComponent<MeshRenderer>();
             if (!originalMaterials.ContainsKey(child.gameObject)) {
@@ -17,16 +24,14 @@ public class PlacementManager : MonoBehaviour {
             Material[] materialsToSet = new Material[renderer.materials.Length];
             for (int i = 0; i < materialsToSet.Length; i++) {
                 materialsToSet[i] = transparentMaterial;
-                materialsToSet[i].color = Color.green;
+                materialsToSet[i].color = colorToSet;
             }
 
             renderer.materials = materialsToSet;
         }
-
-        return newStructure;
     }
 
-    public void ConfirmPlacement(IEnumerable<GameObject> structureCollection) {
+    public void PlaceStructuresOnMap(IEnumerable<GameObject> structureCollection) {
         foreach (GameObject structure in structureCollection) {
             foreach (Transform child in structure.transform) {
                 MeshRenderer renderer = child.GetComponent<MeshRenderer>();
@@ -38,18 +43,15 @@ public class PlacementManager : MonoBehaviour {
         originalMaterials.Clear();
     }
 
-    public void CancelPlacement(IEnumerable<GameObject> structureCollection) {
+    public void DestroyStructures(IEnumerable<GameObject> structureCollection) {
         foreach (GameObject structure in structureCollection) {
             Destroy(structure);
         }
         originalMaterials.Clear();
     }
 
-    public void RemoveBuilding(Vector3 gridPosition, GridStructure grid) {
-        GameObject structure = grid.GetStructureFromGrid(gridPosition);
-        if (structure != null) {
-            Destroy(structure);
-            grid.RemoveStructureFromGrid(gridPosition);
-        }
+    public void SetBuildingForRemoval(GameObject buildingToRemove) {
+        Color colorToSet = Color.red;
+        ModifyStructurePrefabLook(buildingToRemove, colorToSet);
     }
 }

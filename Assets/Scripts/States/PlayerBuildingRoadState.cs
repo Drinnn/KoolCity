@@ -13,7 +13,21 @@ public class PlayerBuildingRoadState : PlayerState {
         this._buildingManager.PlaceStructureAt(inputPosition, this._structureName, StructureType.Road);
     }
 
+    public override void OnBuildSingleStructure(string structureName) {
+        this._buildingManager.CancelPlacement();
+        base.OnBuildSingleStructure(structureName);
+    }
+
+    public override void OnBuildArea(string structureName) {
+        this._buildingManager.CancelPlacement();
+        base.OnBuildArea(structureName);
+    }
+    public override void OnConfirm() {
+        this._buildingManager.ConfirmPlacement();
+    }
+
     public override void OnCancel() {
+        this._buildingManager.CancelPlacement();
         this._gameManager.TransitionToState(this._gameManager.selectionState, null);
     }
 

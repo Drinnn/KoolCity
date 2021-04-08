@@ -36,7 +36,7 @@ public class PlayerStatusTest {
         yield return new WaitForEndOfFrame();
         _gameManagerComponent.State.OnBuildArea(null);
         yield return new WaitForEndOfFrame();
-        Assert.IsTrue(_gameManagerComponent.State is PlayerBuildZoneState);
+        Assert.IsTrue(_gameManagerComponent.State is PlayerBuildingZoneState);
     }
 
     [UnityTest]

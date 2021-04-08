@@ -24,7 +24,7 @@ public class BuildingManager {
     }
 
     public void ConfirmPlacement() {
-        _placementManager.ConfirmPlacement(_structuresToBeModified.Values);
+        _placementManager.PlaceStructuresOnMap(_structuresToBeModified.Values);
         foreach (var keyValuePair in _structuresToBeModified) {
             _grid.PlaceStructureOnGrid(keyValuePair.Value, keyValuePair.Key);
         }
@@ -32,7 +32,7 @@ public class BuildingManager {
     }
 
     public void CancelPlacement() {
-        _placementManager.CancelPlacement(_structuresToBeModified.Values);
+        _placementManager.DestroyStructures(_structuresToBeModified.Values);
         _structuresToBeModified.Clear();
     }
 
@@ -40,7 +40,22 @@ public class BuildingManager {
         Vector3 gridPosition = this._grid.CalculateGridPosition(inputPosition);
 
         if (_grid.IsCellTaken(gridPosition)) {
-            _placementManager.RemoveBuilding(gridPosition, _grid);
+            GameObject structure = _grid.GetStructureFromGrid(gridPosition);
+            _structuresToBeModified.Add(Vector3Int.FloorToInt(gridPosition), structure);
+            _placementManager.SetBuildingForRemoval(structure);
         }
+    }
+
+    public void ConfirmRemoval() {
+        foreach (Vector3Int gridPosition in _structuresToBeModified.Keys) {
+            _grid.RemoveStructureFromGrid(gridPosition);
+        }
+        this._placementManager.DestroyStructures(_structuresToBeModified.Values);
+        _structuresToBeModified.Clear();
+    }
+
+    public void CancelRemoval() {
+        this._placementManager.PlaceStructuresOnMap(_structuresToBeModified.Values);
+        _structuresToBeModified.Clear();
     }
 }

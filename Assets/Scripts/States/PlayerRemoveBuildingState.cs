@@ -11,7 +11,27 @@ public class PlayerRemoveBuildingState : PlayerState {
         this._buildingManager.RemoveBuildingAt(inputPosition);
     }
 
+    public override void OnBuildSingleStructure(string structureName) {
+        this._buildingManager.CancelRemoval();
+        base.OnBuildSingleStructure(structureName);
+    }
+
+    public override void OnBuildArea(string structureName) {
+        this._buildingManager.CancelRemoval();
+        base.OnBuildArea(structureName);
+    }
+
+    public override void OnBuildRoad(string structureName) {
+        this._buildingManager.CancelRemoval();
+        base.OnBuildRoad(structureName);
+    }
+
+    public override void OnConfirm() {
+        this._buildingManager.ConfirmRemoval();
+    }
+
     public override void OnCancel() {
+        this._buildingManager.CancelRemoval();
         this._gameManager.TransitionToState(this._gameManager.selectionState, null);
     }
 }

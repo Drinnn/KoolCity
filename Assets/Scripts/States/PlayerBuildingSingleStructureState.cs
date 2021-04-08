@@ -11,6 +11,16 @@ public class PlayerBuildingSingleStructureState : PlayerState {
         this._buildingManager.PlaceStructureAt(inputPosition, this._structureName, StructureType.SingleStructure);
     }
 
+    public override void OnBuildArea(string structureName) {
+        this._buildingManager.CancelPlacement();
+        base.OnBuildArea(structureName);
+    }
+
+    public override void OnBuildRoad(string structureName) {
+        this._buildingManager.CancelPlacement();
+        base.OnBuildRoad(structureName);
+    }
+
     public override void OnConfirm() {
         _buildingManager.ConfirmPlacement();
     }
