@@ -11,22 +11,6 @@ public class PlayerRemoveBuildingState : PlayerState {
         this._buildingManager.RemoveBuildingAt(inputPosition);
     }
 
-    public override void OnInputPointerChange(Vector3 position) {
-        return;
-    }
-
-    public override void OnInputPointerUp() {
-        return;
-    }
-
-    public override void OnInputPanChange(Vector3 position) {
-        return;
-    }
-
-    public override void OnInputPanUp() {
-        return;
-    }
-
     public override void OnCancel() {
         this._gameManager.TransitionToState(this._gameManager.selectionState, null);
     }

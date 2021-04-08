@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
 
     private void PrepareStates() {
         _buildingManager = new BuildingManager(placementManager, structureRepository, gridWidth, gridLength, _cellSize);
-        selectionState = new PlayerSelectionState(this, cameraMovement);
+        selectionState = new PlayerSelectionState(this);
         buildingSingleStructureState = new PlayerBuildingSingleStructureState(this, _buildingManager);
         buildingAreaState = new PlayerBuildZoneState(this, _buildingManager);
         buildingRoadState = new PlayerBuildingRoadState(this, _buildingManager);

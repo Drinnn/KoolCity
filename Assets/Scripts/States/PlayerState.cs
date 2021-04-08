@@ -2,9 +2,11 @@ using UnityEngine;
 
 public abstract class PlayerState {
     protected GameManager _gameManager;
+    protected CameraMovement _cameraMovement;
 
     public PlayerState(GameManager gameManager) {
         this._gameManager = gameManager;
+        this._cameraMovement = _gameManager.cameraMovement;
     }
 
     public virtual void OnInputPointerDown(Vector3 position) {
@@ -17,10 +19,10 @@ public abstract class PlayerState {
 
     }
     public virtual void OnInputPanChange(Vector3 position) {
-
+        this._cameraMovement.MoveCamera(position);
     }
     public virtual void OnInputPanUp() {
-
+        this._cameraMovement.StopCameraMovement();
     }
     public virtual void OnCancel() {
 
@@ -41,7 +43,6 @@ public abstract class PlayerState {
     public virtual void OnDemolishAction() {
         this._gameManager.TransitionToState(this._gameManager.removeBuildingState, null);
     }
-
     public virtual void EnterState(string structureName) {
 
     }
