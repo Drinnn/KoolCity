@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour {
     private Action<string> OnBuildAreaHandler;
     private Action<string> OnBuildSingleStructureHandler;
     private Action<string> OnBuildRoadHandler;
+    private Action OnConfirmHandler;
     private Action OnCancelHandler;
     private Action OnDemolishActionHandler;
 
@@ -16,6 +17,7 @@ public class UIController : MonoBehaviour {
     [SerializeField] public Button buildResidentialAreaBtn;
 
     [SerializeField] public GameObject cancelActionPanel;
+    [SerializeField] public Button confirmActionBtn;
     [SerializeField] public Button cancelActionBtn;
 
     [SerializeField] public GameObject buildingMenuPanel;
@@ -33,6 +35,7 @@ public class UIController : MonoBehaviour {
         cancelActionPanel.SetActive(false);
         buildingMenuPanel.SetActive(false);
         // buildResidentialAreaBtn.onClick.AddListener(OnBuildAreaCallback);
+        confirmActionBtn.onClick.AddListener(OnConfirmCallback);
         cancelActionBtn.onClick.AddListener(OnCancelCallback);
         openBuildMenuBtn.onClick.AddListener(OnOpenBuildMenu);
         demolishBtn.onClick.AddListener(OnDemolishHandler);
@@ -87,6 +90,11 @@ public class UIController : MonoBehaviour {
         OnCloseMenuHandler();
     }
 
+    private void OnConfirmCallback() {
+        cancelActionPanel.SetActive(false);
+        OnConfirmHandler?.Invoke();
+    }
+
     private void OnCancelCallback() {
         cancelActionPanel.SetActive(false);
         OnCancelHandler?.Invoke();
@@ -124,6 +132,14 @@ public class UIController : MonoBehaviour {
 
     public void RemoveListenerOnBuildRoadEvent(Action<string> listener) {
         OnBuildRoadHandler -= listener;
+    }
+
+    public void AddListenerOnConfirmEvent(Action listener) {
+        OnConfirmHandler += listener;
+    }
+
+    public void RemoveListenerOnConfirmEvent(Action listener) {
+        OnConfirmHandler -= listener;
     }
 
     public void AddListenerOnCancelEvent(Action listener) {

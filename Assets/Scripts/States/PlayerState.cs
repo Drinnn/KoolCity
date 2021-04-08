@@ -24,6 +24,11 @@ public abstract class PlayerState {
     public virtual void OnInputPanUp() {
         this._cameraMovement.StopCameraMovement();
     }
+
+    public virtual void OnConfirm() {
+
+    }
+
     public virtual void OnCancel() {
 
     }
