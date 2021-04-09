@@ -86,4 +86,25 @@ public class BuildingManager {
         this._placementManager.PlaceStructuresOnMap(_structuresToBeModified.Values);
         _structuresToBeModified.Clear();
     }
+
+    // TODO: REMOVE "CHEAT" METHODS FOR TESTING ONLY
+    public GameObject CheckForStructureInGrid(Vector3 inputPosition) {
+        Vector3 gridPosition = _grid.CalculateGridPosition(inputPosition);
+        if (_grid.IsCellTaken(gridPosition)) {
+            return _grid.GetStructureFromGrid(gridPosition);
+        }
+
+        return null;
+    }
+
+    public GameObject CheckForStructureInDictionary(Vector3 inputPosition) {
+        Vector3 gridPosition = _grid.CalculateGridPosition(inputPosition);
+        Vector3Int gridPositionInt = Vector3Int.FloorToInt(gridPosition);
+        if (_structuresToBeModified.ContainsKey(gridPositionInt)) {
+            return _structuresToBeModified[gridPositionInt];
+        }
+
+        return null;
+    }
+    //
 }

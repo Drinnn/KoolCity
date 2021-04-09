@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlacementManager : MonoBehaviour {
-    [SerializeField] private Transform ground;
-    [SerializeField] private Material transparentMaterial;
+    [SerializeField] public Transform ground;
+    [SerializeField] public Material transparentMaterial;
     [SerializeField] private Dictionary<GameObject, Material[]> originalMaterials = new Dictionary<GameObject, Material[]>();
 
     public GameObject CreateGhostStructure(Vector3 gridPosition, GameObject buildingPrefab) {
