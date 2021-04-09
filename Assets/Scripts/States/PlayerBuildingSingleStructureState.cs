@@ -23,6 +23,7 @@ public class PlayerBuildingSingleStructureState : PlayerState {
 
     public override void OnConfirm() {
         _buildingManager.ConfirmPlacement();
+        base.OnConfirm();
     }
 
     public override void OnCancel() {

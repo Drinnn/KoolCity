@@ -28,6 +28,7 @@ public class PlayerRemoveBuildingState : PlayerState {
 
     public override void OnConfirm() {
         this._buildingManager.ConfirmRemoval();
+        base.OnConfirm();
     }
 
     public override void OnCancel() {

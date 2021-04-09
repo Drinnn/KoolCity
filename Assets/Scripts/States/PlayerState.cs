@@ -26,7 +26,7 @@ public abstract class PlayerState {
     }
 
     public virtual void OnConfirm() {
-
+        this._gameManager.TransitionToState(this._gameManager.selectionState, null);
     }
 
     public virtual void OnCancel() {

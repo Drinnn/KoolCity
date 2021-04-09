@@ -24,6 +24,7 @@ public class PlayerBuildingRoadState : PlayerState {
     }
     public override void OnConfirm() {
         this._buildingManager.ConfirmPlacement();
+        base.OnConfirm();
     }
 
     public override void OnCancel() {
